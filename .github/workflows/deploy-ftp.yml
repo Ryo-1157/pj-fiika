@@ -6,7 +6,7 @@ on:
   repository_dispatch:
     branches: [main]
   workflow_dispatch:
-    branches: [main]
+    types: [update_content]
 
 jobs:
   build:
@@ -29,11 +29,12 @@ jobs:
       - name: Deploy FTP
         uses: SamKirkland/FTP-Deploy-Action@4.2.0
         with:
-          server: ${{ secrets.FTP_SERVER }}:${{ secrets.FTP_PORT }}
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ${{ secrets.FTP_PROTOCOL }}
-          # port: ${{ secrets.FTP_PORT}}
+          port: ${{ secrets.FTP_PORT}}
+          ssh_private_key: ${{ secrets.FTP_PRIVATE_KEY }}
           server-dir: ${{ secrets.FTP_REMOTE_ROOT }}
           local-dir: ./out/
           dangerous-clean-slate: true
